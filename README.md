@@ -32,7 +32,7 @@ If your application is not present, you can simply add them. Either use the util
 | `googledrive_calendly_googlecalendar`       | [Funcdex-0.6B-googledrive_calendly_googlecalendar](https://huggingface.co/prem-research/Funcdex-0.6B-googledrive_calendly_googlecalendar) |
 | `whatsapp_todoist`                          | [Funcdex-0.6B-whatsapp_todoist](https://huggingface.co/prem-research/Funcdex-0.6B-whatsapp_todoist) |
 
-These models reach excellent performance while being cheaper when compared to closed LLMs.
+Our general model, [Funcdex-1.7B](https://huggingface.co/prem-research/Funcdex-1.7B) is 20% more performant and 2x less expensive than gpt-oss-120b.
 
 |LLM                    |Function Call Match   |Cost ($)          |
 |-----------------------|----------------------|------------------|
@@ -41,10 +41,12 @@ These models reach excellent performance while being cheaper when compared to cl
 |GPT-5 (minimal)        |0.59                  |205.45            |
 |Qwen3-0.6B             |0.59                  |2.83              |
 |Qwen3-1.7B             |0.69                  |5.73              |
-|*Funcdex-0.6B*         |*0.70*                |*0.19*            |
-|*Funcdex-1.7B*         |*0.81*                |*5.64*            |
+|**Funcdex-0.6B**         |**0.70**                |**0.19**            |
+|**Funcdex-1.7B**         |**0.81**                |**5.64**            |
 
-*Funcdex-0.6B is the average of performances of individual Funcdex-0.6B models.*
+Notes:
+- *Funcdex-0.6B is the average of performances of individual Funcdex-0.6B models.*
+- *Qwen3-0.6B and Qwen3-1.7B evaluation costs are estimated extrapolated from Llama3.2-3B serverless costs. Other model's costs are sourced from Openrouter.*
 
 For more details, refer to the blog post.
 
@@ -281,6 +283,9 @@ python3 examples/utils/parse_openapi_spec.py \
 - We didn't try optimizing the prompts at all. 
 - This codebase was refactored for release and has not been tested thoroughly in its current form. If you find a bug, please open an issue, we will attend to it at the earliest.
 - No support for Parallel function calling, only multi-step.
+- There is no rejection of examples apart from the embedding -- perhaps using n-gram overlap or ROUGE scores to dedup conversations are possible extensions.
+- Generated conversations are "happy paths" -> it doesn't teach the model to recover from errors.
+
 
 ## Acknowledgements
 We build on [Composio.dev](Composio.dev)'s list of tool definitions to power this project.
