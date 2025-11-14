@@ -280,6 +280,7 @@ python3 examples/utils/parse_openapi_spec.py \
 - Conversation realism: Although the conversations are better than any public offering, the conversations still don't feel very natural. Idea: Use a better User simulator such as [UserLM-8b](https://huggingface.co/microsoft/UserLM-8b).
 - We didn't try optimizing the prompts at all. 
 - This codebase was refactored for release and has not been tested thoroughly in its current form. If you find a bug, please open an issue, we will attend to it at the earliest.
+- No support for Parallel function calling, only multi-step.
 
 ## Acknowledgements
 We build on [Composio.dev](Composio.dev)'s list of tool definitions to power this project.
