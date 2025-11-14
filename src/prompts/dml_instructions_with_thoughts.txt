@@ -1,0 +1,65 @@
+Dialog Markup Language (DML) Format Rules:
+### 1. Core Components
+
+The language consists of four primary types of components identified by tags:
+
+  * **User Turns:** Represented by the `</user>` tag.
+  * **Assistant Thoughts:** Represented by the `<assistant_thought>` tag.
+  * **Assistant Turns:** Represented by the `</assistant>` tag.
+  * **Tool Calls and Responses:** Represented by the `<tool>` and `<tool_response>` tags.
+
+### 2. Turn Structure
+
+  * **Turn Delimiters:** `</user>` and `</assistant>` act as markers for the beginning of a new natural language utterance in the conversation.
+  * **Sequential Turns:** The conversation follows a strict sequence of turns, alternating between the user and the assistant.
+
+### 3. User Turn (`</user>`)
+
+  * **Purpose:** To capture the exact text input provided by the human user.
+  * **Rule:** A user turn consists only of the `</user>` tag followed by the user's natural language text.
+
+    **Example:**
+    ```
+    </user> Lyon sounds perfect! Let's lock that in.
+    ```
+
+### 4. Assistant Turn (`<assistant_thought>` and `</assistant>`)
+
+  * **Purpose:** To capture the assistant's internal reasoning (thought) *before* it generates a response to the user, and to log the tool calls it makes.
+  * **Rules:**
+    1.  An assistant's turn *always* begins with an `<assistant_thought>` block. This block contains the assistant's internal reasoning, plan, and chain-of-thought for the upcoming actions and response. It explains *what* the assistant is about to do and *why*.
+    2.  The `<assistant_thought>` block is *immediately* followed by the `</assistant>` tag.
+    3.  This `</assistant>` tag can be followed by an optional, initial natural language response (e.g., "I'm on it," "Let me check...").
+    4.  If the assistant needs to use tools, the turn will then include one or more `<tool>` blocks.
+    5.  Each `<tool>` block must be followed by a corresponding `<tool_response>` block.
+    6.  After all tool calls and their responses are listed, the turn concludes with *another* `<assistant_thought>` block. This block details the synthesis of tool results (e.g., "I received the weather and the stock price. I will now combine them into a summary for the user.").
+    7.  This second thought block is followed by the final `</assistant>` tag and the comprehensive, user-facing natural language response.
+    8.  If an assistant turn requires no tools, it will simply be `<assistant_thought>...thought...</assistant_thought>` followed by `</assistant> ...response...`.
+
+### 5. Tool Usage (`<tool>` and `<tool_response>`)
+
+  * **Purpose:** To log the assistant's internal actions, such as calling APIs or running functions.
+  * **`<tool>` Block:**
+      * Enclosed by `<tool>` and `</tool>` tags.
+      * Content **must** be a JSON object with `"name"` (string) and `"arguments"` (JSON object) keys.
+  * **`<tool_response>` Block:**
+      * Enclosed by `<tool_response>` and `</tool_response>` tags.
+      * Always follows a `<tool>` block.
+      * Content **must** be a JSON object representing the data returned by the tool.
+
+### Summary of a Complex Assistant Turn Flow (INTERLEAVED FORMAT - REQUIRED)
+
+**CRITICAL RULE:** Each `<tool>` must be immediately followed by its `<tool_response>` before any other tool call. This is the INTERLEAVED format.
+
+1.  **`<assistant_thought>`**: The reasoning/plan for the *entire* turn (e.g., "User wants X, I need to call tool Y first.").
+2.  **`</assistant>`**: Start of turn, often with an acknowledgment like "I'm on it."
+3.  **`<tool>`...`</tool>`**: The first tool call (e.g., get weather).
+4.  **`<tool_response>`...`</tool_response>`**: The response from the first tool call **IMMEDIATELY** after the first tool.
+5.  **`<assistant_thought>`**: The reasoning after processing first tool result (e.g., "Got weather 'sunny'. Now I need to search for restaurants.").
+6.  **`</assistant>`**: Optional message processing the first result before calling the next tool.
+7.  **`<tool>`...`</tool>`**: The second tool call (e.g., search for restaurants).
+8.  **`<tool_response>`...`</tool_response>`**: The response from the second tool call **IMMEDIATELY** after the second tool.
+9.  **`<assistant_thought>`**: The reasoning for the *final* response (e.g., "Got weather 'sunny' and restaurant 'PizzaPlace'. I will combine these into a final answer.").
+10. **`</assistant>`**: The final, user-facing summary that uses the data from both tool responses.
+
+IMPORTANT: Each <tool> must have an immediate <tool_response> for each tool call before any other tag!!!

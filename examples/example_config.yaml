@@ -1,0 +1,145 @@
+# ============================================================================
+# LLM API Configuration (used for all operations)
+# ============================================================================
+llm_api:
+  # Single LLM configuration used for all operations:
+  # - Scenario/disposition/tool selection generation
+  # - Conversation generation
+  # - Scoring/evaluation
+  # - System prompt generation
+  api_key: ${LLM_API_KEY:empty}
+  base_url: ${LLM_BASE_URL:http://localhost:8000/v1/}
+  model: ${LLM_MODEL:openai/openai/gpt-oss-120b}
+
+# ============================================================================
+# File Paths (relative to project root)
+# ============================================================================
+paths:
+  # Data files
+  data:
+    tool_definitions: examples/data/gmail_drive_tools.json
+    wanted_toolkits: examples/data/example_wanted_toolkits.json
+  
+  # Prompt templates directory
+  prompts: src/prompts
+  
+  # Grammar files
+  grammars:
+    with_thoughts: src/grammars/dml_grammar_with_thoughts.gbnf
+    without_thoughts: src/grammars/dml_grammar_without_thoughts.gbnf
+  
+  # Output files (for generated data)
+  output:
+    conversations: outputs/conversations.jsonl
+    conversations_with_system_prompts: outputs/conversations_with_system_prompts.jsonl
+    scored_conversations: outputs/scored_conversations.jsonl
+    accepted_conversations: outputs/accepted_conversations.jsonl
+    parsed_conversations: outputs/parsed_conversations.jsonl
+# ============================================================================
+# Conversation Generation Settings
+# ============================================================================
+generation:
+  # Include <assistant_thought> tags in generated conversations
+  include_assistant_thoughts: false
+  
+  # Total number of conversations to generate
+  total_conversations: 3
+  
+  # Optional workflow description to guide scenario generation (empty = no specific guidance)
+  workflow_description: ""
+  
+  # Diversity checking for scenarios
+  diversity:
+    similarity_threshold: 0.95  # Max similarity before rejecting duplicate scenarios
+    max_scenario_retries: 20    # Max attempts to generate diverse scenario
+    num_seed_scenarios: 50      # Number of existing scenarios to show as examples
+  
+  # Correction and retry settings
+  correction:
+    max_attempts: 5           # Max times to ask LLM to fix validation errors
+    max_retries: 100          # Max retries for LLM API calls
+    retry_delay: 2            # Seconds to wait between retries
+  
+  # Minimum conversation quality
+  min_user_messages: 2        # Reject conversations with <= this many user messages
+  
+  # User query clarity levels and their weights
+  # Weight determines how often each clarity level is sampled
+  clarity_levels:
+    excellent:
+      weight: 0.2
+      description: "The user's requests are consistently clear, concise, and provide all necessary information for the assistant to proceed. The assistant rarely needs to ask for clarification. The conversation flows efficiently and naturally, and the user's language is a perfect match for the provided persona and scenario."
+    good:
+      weight: 0.2
+      description: "The user's requests are mostly clear and effective. The user may occasionally omit a minor detail, requiring a single, simple clarification question from the assistant. The conversation path remains logical and efficient."
+    average:
+      weight: 0.2
+      description: "The user's requests are generally understandable but are often somewhat vague or incomplete. The assistant needs to ask multiple clarification questions to gather details required for tool use. The conversation feels slightly stilted or inefficient as a result."
+  
+  # Temperature and sampling settings for LLM calls
+  llm_settings:
+    scenario:
+      temperature: 1.0
+      top_k: 100
+      top_p: 0.8
+      timeout: 10000
+    conversation:
+      temperature: 1.0
+      max_tokens: 128000
+      timeout: 10000
+      min_p: 0.1
+    correction:
+      temperature: 0.7
+      max_tokens: 128000
+      timeout: 10000
+      min_p: 0.1
+    tool_selection:
+      temperature: 0.0
+      timeout: 10000
+  
+  
+  # Tool limiting
+  max_tools_in_context: 3     # Max random additional tools to include beyond used tools
+
+# ============================================================================
+# Processing Settings (Parallelism, Concurrency)
+# ============================================================================
+processing:
+  # Parallel job counts
+  conversation_generation:
+    n_jobs: 32                # Number of parallel workers for conversation generation
+  
+  scoring:
+    n_jobs: 32               # Number of parallel workers for scoring
+  
+  system_prompt_generation:
+    semaphore_limit: 32       # Max concurrent API calls for system prompt generation
+  
+  # Random seed for reproducibility
+  random_seed: 42
+  
+  # Tool array limiting (OpenAI API constraint)
+  max_tools_per_conversation: 20  # Max tools to include in each conversation
+  
+  # Train/test split
+  test_conversations_per_toolkit: 20  # Number of conversations to reserve for test set
+
+# ============================================================================
+# Scoring Settings
+# ============================================================================
+scoring:
+  # Scoring thresholds
+  min_tool_use_quality: 4     # Minimum score to accept a conversation (1-5 scale)
+  
+  # LLM scoring settings
+  temperature: 0.0
+  timeout: 1000
+  reasoning_effort: medium    # low, medium, high
+
+# ============================================================================
+# Embedding Model Settings (for similarity computation)
+# ============================================================================
+embedding:
+  model_name: avsolatorio/GIST-small-Embedding-v0
+  device: cpu                 # cpu or cuda
+

@@ -1,0 +1,46 @@
+root ::= conversation
+
+# Enforce minimum conversation length: at least 6 user messages alternating with assistant turns
+conversation ::= user-message assistant-turn user-message assistant-turn user-message assistant-turn user-message assistant-turn user-message assistant-turn user-message assistant-turn conversation-opt
+
+conversation-opt ::= turn conversation-opt | ""
+
+turn ::= user-message assistant-turn
+
+user-message ::= "</user>" text-content-opt
+
+assistant-turn ::= "</assistant>" after-assistant-opt
+
+after-assistant-opt ::= after-assistant | ""
+after-assistant ::= text-content tool-interactions | text-content | tool-interactions
+
+tool-interactions ::= tool-call-pair | tool-call-pair tool-interactions
+
+tool-call-pair ::= tool-call tool-response
+
+tool-call ::= "<tool>" ws-opt json-value ws-opt "</tool>"
+tool-response ::= "<tool_response>" ws-opt json-value ws-opt "</tool_response>"
+
+text-content-opt ::= text-content | ""
+text-content ::= [^<] text-content | [^<]
+
+# JSON grammar (strict)
+json-value ::= json-object | json-array | json-string | json-number | "true" | "false" | "null"
+
+json-object ::= "{" ws-opt "}" | "{" ws-opt json-members ws-opt "}"
+json-members ::= json-pair | json-pair "," ws-opt json-members
+json-pair ::= ws-opt json-string ws-opt ":" ws-opt json-value ws-opt
+
+json-array ::= "[" ws-opt "]" | "[" ws-opt json-elements ws-opt "]"
+json-elements ::= json-value | json-value "," ws-opt json-elements
+
+json-string ::= "\"" json-string-content "\""
+json-string-content ::= json-string-char json-string-content | ""
+json-string-char ::= [^"\\] | "\\" json-escape-char
+json-escape-char ::= ["\\bfnrt/] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]
+
+json-number ::= "-"? ("0" | [1-9] [0-9]*) ("." [0-9]+)? ([eE] [+-]? [0-9]+)?
+
+# Whitespace
+ws-opt ::= ws | ""
+ws ::= [ \t\n\r]+ | [ \t\n\r]

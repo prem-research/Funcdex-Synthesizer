@@ -1,0 +1,8 @@
+Create a realistic business scenario where someone would need to use multiple tools from these toolkits: {toolkit_names}.
+
+Available toolkits:
+{toolkit_descriptions}
+
+Generate a specific, detailed scenario (2-3 sentences) that would naturally require using tools from multiple toolkits in sequence. The scenario should be realistic and represent a common business use case.
+
+Respond with just the scenario description, no additional formatting.

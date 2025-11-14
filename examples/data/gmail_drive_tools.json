@@ -1,0 +1,30 @@
+[
+    {
+        "toolkit_name": "gmail",
+        "tool_id": "FETCH_EMAILS",
+        "tool_description": "Fetches a list of email messages from a gmail account, supporting filtering, pagination, and optional full content retrieval.",
+        "tool_input_parameters": "{\"ids_only\": {\"type\": \"boolean\", \"required\": false}, \"include_payload\": {\"type\": \"boolean\", \"required\": false}, \"include_spam_trash\": {\"type\": \"boolean\", \"required\": false}, \"label_ids\": {\"type\": \"array\", \"required\": false}, \"max_results\": {\"type\": \"integer\", \"required\": false}, \"page_token\": {\"type\": \"string\", \"required\": false}, \"query\": {\"type\": \"string\", \"required\": false}, \"user_id\": {\"type\": \"string\", \"required\": false}, \"verbose\": {\"type\": \"boolean\", \"required\": false}}",
+        "tool_response_parameters": "{\"data\": {\"type\": \"object\", \"required\": true}, \"error\": {\"type\": \"string\", \"required\": false}, \"successful\": {\"type\": \"boolean\", \"required\": true}}"
+    },
+    {
+        "toolkit_name": "gmail",
+        "tool_id": "LIST_THREADS",
+        "tool_description": "Retrieves a list of email threads from a gmail account, identified by `user id` (email address or 'me'), supporting filtering and pagination.",
+        "tool_input_parameters": "{\"max_results\": {\"type\": \"integer\", \"required\": false}, \"page_token\": {\"type\": \"string\", \"required\": false}, \"query\": {\"type\": \"string\", \"required\": false}, \"user_id\": {\"type\": \"string\", \"required\": false}, \"verbose\": {\"type\": \"boolean\", \"required\": false}}",
+        "tool_response_parameters": "{\"data\": {\"type\": \"object\", \"required\": true}, \"error\": {\"type\": \"string\", \"required\": false}, \"successful\": {\"type\": \"boolean\", \"required\": true}}"
+    },
+    {
+        "toolkit_name": "googledrive",
+        "tool_id": "FIND_FILE",
+        "tool_description": "Tool to list or search for files and folders in google drive. use when you need to find specific files based on query criteria or list contents of a drive/folder.",
+        "tool_input_parameters": "{\"corpora\": {\"type\": \"string\", \"required\": false}, \"driveId\": {\"type\": \"string\", \"required\": false}, \"fields\": {\"type\": \"string\", \"required\": false}, \"includeItemsFromAllDrives\": {\"type\": \"boolean\", \"required\": false}, \"orderBy\": {\"type\": \"string\", \"required\": false}, \"pageSize\": {\"type\": \"integer\", \"required\": false}, \"pageToken\": {\"type\": \"string\", \"required\": false}, \"q\": {\"type\": \"string\", \"required\": false}, \"spaces\": {\"type\": \"string\", \"required\": false}, \"supportsAllDrives\": {\"type\": \"boolean\", \"required\": false}}",
+        "tool_response_parameters": "{\"data\": {\"type\": \"object\", \"required\": true}, \"error\": {\"type\": \"string\", \"required\": false}, \"successful\": {\"type\": \"boolean\", \"required\": true}}"
+    },
+    {
+        "toolkit_name": "googledrive",
+        "tool_id": "LIST_FILES_AND_FOLDERS",
+        "tool_description": "Tool to list a user's files and folders in google drive. use this to search or browse for files and folders based on various criteria.",
+        "tool_input_parameters": "{\"corpora\": {\"type\": \"string\", \"required\": false}, \"driveId\": {\"type\": \"string\", \"required\": false}, \"fields\": {\"type\": \"string\", \"required\": false}, \"folderId\": {\"type\": \"string\", \"required\": false}, \"includeItemsFromAllDrives\": {\"type\": \"boolean\", \"required\": false}, \"includeLabels\": {\"type\": \"string\", \"required\": false}, \"includePermissionsForView\": {\"type\": \"string\", \"required\": false}, \"orderBy\": {\"type\": \"string\", \"required\": false}, \"pageSize\": {\"type\": \"integer\", \"required\": false}, \"pageToken\": {\"type\": \"string\", \"required\": false}, \"q\": {\"type\": \"string\", \"required\": false}, \"spaces\": {\"type\": \"string\", \"required\": false}, \"supportsAllDrives\": {\"type\": \"boolean\", \"required\": false}}",
+        "tool_response_parameters": "{\"data\": {\"type\": \"object\", \"required\": true}, \"error\": {\"type\": \"string\", \"required\": false}, \"successful\": {\"type\": \"boolean\", \"required\": true}}"
+    }
+]

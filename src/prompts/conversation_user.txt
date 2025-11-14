@@ -1,0 +1,20 @@
+# Specifications for the DML Conversation to generate:
+Scenario:
+{scenario}
+
+User persona:
+{user_persona_desc}
+
+Disposition:
+{disposition_desc}
+
+Available tools:
+{formatted_tools}
+
+Instructions:
+1. Make the conversation natural and practical.
+{thought_instructions}
+
+Respond with just the conversation in DML format, no additional explanation.
+
+IMPORTANT: Each <tool> must have an immediate <tool_response> for each tool call before any other tag!!!

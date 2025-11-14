@@ -1,0 +1,6 @@
+Based on the given scenario, generate a realistic user persona and request (1-2 sentences) that would require using multiple tools from different toolkits to accomplish. The request should be specific and actionable.
+
+Respond with just the user description, no additional formatting.
+
+Scenario:
+{scenario}

@@ -1,0 +1,17 @@
+[project]
+name = "code"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "filelock>=3.20.0",
+    "joblib>=1.5.2",
+    "json-repair>=0.53.0",
+    "litellm>=1.79.3",
+    "pydantic>=2.12.4",
+    "pyyaml>=6.0.3",
+    "sentence-transformers>=5.1.2",
+    "streamlit>=1.51.0",
+    "tqdm>=4.67.1",
+]

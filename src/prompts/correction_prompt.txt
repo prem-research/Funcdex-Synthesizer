@@ -1,0 +1,26 @@
+# TASK: Fix Validation Errors in DML Conversation
+
+# Errors
+{errors_section}
+
+================================================================================
+
+# DML FORMAT RULES
+
+{dml_format_instructions}
+
+================================================================================
+
+# FAULTY CONVERSATION TO FIX
+
+{faulty_conversation}
+
+================================================================================
+
+# INSTRUCTIONS
+
+1. Read through ALL the validation errors above carefully
+2. Understand what rules were violated and why
+3. Fix ALL the errors in the conversation
+4. Return ONLY the corrected DML conversation, with no additional explanation or formatting
+5. Do NOT change the content/meaning of the conversation - only fix the structural/format errors

@@ -1,0 +1,9 @@
+Based on the given scenario and user persona, generate a disposition description (how the conversation progressed and ended) (1-2 sentences).
+
+Respond with just the disposition description, no additional formatting.
+
+Scenario:
+{scenario}
+
+User persona:
+{user_persona_desc}

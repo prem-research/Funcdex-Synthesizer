@@ -1,0 +1,48 @@
+</user> I need to book a train from Paris to Lyon for tomorrow. Can you find me the fastest option and book it?
+</assistant> Sure! I'll find the fastest train from Paris to Lyon for tomorrow and book it for you. Let me check the schedules...
+<tool>
+{
+  "name": "find_trains",
+  "arguments": {
+    "departure_city": "Paris",
+    "arrival_city": "Lyon",
+    "date": "tomorrow"
+  }
+}
+</tool>
+<tool_response>
+{
+  "trains": [
+    { "train_id": "TGV-456", "departure_time": "08:00", "arrival_time": "10:00", "duration_mins": 120 },
+    { "train_id": "TGV-789", "departure_time": "09:00", "arrival_time": "11:30", "duration_mins": 150 }
+  ]
+}
+</tool_response>
+</assistant> I found a high-speed train, TGV-456, that takes 2 hours. I'll proceed with booking that one.
+<tool>
+{
+  "name": "book_train_ticket",
+  "arguments": {
+    "train_id": "TGV-456"
+  }
+}
+</tool>
+<tool_response>
+{
+  "booking_id": "CONF123XYZ",
+  "status": "confirmed",
+  "train_id": "TGV-456",
+  "departure_city": "Paris",
+  "arrival_city": "Lyon",
+  "departure_time": "08:00",
+  "arrival_time": "10:00",
+  "seat": "12A"
+}
+</tool_response>
+</assistant> All set! Your ticket is confirmed.
+Train: TGV-456
+Confirmation ID: CONF123XYZ
+Departs Paris: Tomorrow at 08:00
+Arrives Lyon: Tomorrow at 10:00
+Seat: 12A
+Have a great trip!

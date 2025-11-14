@@ -1,0 +1,73 @@
+You are an expert AI Conversation Quality Analyst. Your task is to evaluate a synthetically generated conversation based on two key criteria: **User Query Clarity** and **Tool Use Quality**.
+
+You will be given the context used to generate the conversation (Scenario, User Persona, and Disposition) and the full conversation in Dialog Markup Language (DML).
+
+Please follow these steps:
+
+1.  Carefully review the provided **Conversation Context** and the **Conversation DML**.
+2.  Analyze the conversation against the detailed **5-point rubrics** provided below for each category.
+3.  First, perform a step-by-step "Chain of Thought" analysis. In this section, you will reason about the conversation's quality, explaining how the user's turns and the assistant's tool calls align with the rubrics.
+4.  After your analysis, provide a final JSON object containing your reasoning and the integer scores for each category.
+
+-----
+
+### **3. Evaluation Rubrics**
+
+#### **Category 1: User Query Clarity**
+
+This rubric measures how clear, direct, and complete the user's requests are. High scores are for users who provide necessary information upfront, while low scores are for vague, ambiguous, or incomplete queries that require excessive clarification.
+
+  * **Score 5 (Excellent):** The user's requests are consistently clear, concise, and provide all necessary information for the assistant to proceed. The assistant rarely needs to ask for clarification. The conversation flows efficiently and naturally, and the user's language is a perfect match for the provided persona and scenario.
+  * **Score 4 (Good):** The user's requests are mostly clear and effective. The user may occasionally omit a minor detail, requiring a single, simple clarification question from the assistant. The conversation path remains logical and efficient.
+  * **Score 3 (Average):** The user's requests are generally understandable but are often somewhat vague or incomplete. The assistant needs to ask multiple clarification questions to gather details required for tool use. The conversation feels slightly stilted or inefficient as a result.
+  * **Score 2 (Poor):** The user's requests are frequently ambiguous, confusing, or contradictory. The assistant struggles to understand the user's intent, leading to significant back-and-forth and clarification loops that hinder progress.
+  * **Score 1 (Very Poor):** The user's requests are nonsensical, incoherent, or completely lack the necessary information. The conversation is stalled, making it nearly impossible for the assistant to take meaningful action. The dialogue does not align with the provided scenario or persona.
+
+#### **Category 2: Tool Use Quality**
+
+This rubric measures the appropriateness and correctness of the assistant's tool calls. High scores are for selecting the right tool with accurate arguments extracted from the conversation. Low scores indicate incorrect tool selection, hallucinated arguments, or failure to use a tool when needed.
+
+  * **Score 5 (Excellent):** Every tool call is perfectly justified by the user's request. The assistant selects the most logical and efficient tool for each task. All arguments are correctly extracted from the conversation, with no hallucinations or missing required parameters. The sequence of tool calls is optimal.
+  * **Score 4 (Good):** The assistant's tool use is appropriate and logical. There might be a very minor issue, such as using a slightly suboptimal but still correct argument (e.g., a generic name when a more specific one was implied) or a valid but slightly inefficient sequence of tool calls.
+  * **Score 3 (Average):** The assistant correctly identifies the need for a tool but may choose a suboptimal one, or the arguments are partially incorrect/incomplete. For example, it might miss an optional but helpful parameter or slightly misinterpret a value. The overall goal is still achieved, but inefficiently.
+  * **Score 2 (Poor):** The assistant makes significant errors in tool use. This includes choosing the wrong tool for the task, hallucinating argument values that were not mentioned, or consistently failing to provide required parameters for the tool to function.
+  * **Score 1 (Very Poor):** The assistant either fails to use a tool when one is clearly needed or hallucinates a tool call that is completely irrelevant to the conversation. The tool calls are nonsensical, with incorrect names or arguments, making it impossible to achieve the user's goal.
+
+-----
+
+### **4. Required Output**
+
+First, provide your detailed "Chain of Thought" analysis. Then, conclude with the final JSON object in the specified format.
+
+**Chain of Thought:**
+*(Begin your step-by-step analysis here. Examine each turn, comparing it to the rubrics.)*
+
+**Final Answer:**
+
+```json
+{{
+    "reasoning": "Provide a concise summary of your detailed Chain of Thought analysis here. Explain the rationale behind your scores for both categories, referencing specific parts of the conversation.",
+    "user_query_clarity": <integer_score_from_1_to_5>,
+    "tool_use_quality": <integer_score_from_1_to_5>
+}}
+
+-----
+
+### **1. Conversation Context**
+
+  * **Scenario:** `{scenario}`
+  * **User Persona:** `{user_persona}`
+  * **Disposition:** `{disposition}`
+
+-----
+
+### **2. Conversation DML**
+
+```
+{conversation_dml}
+```
+
+-----
+
+Please score the conversation based on the rubrics above.
+```

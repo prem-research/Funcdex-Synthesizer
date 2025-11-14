@@ -1,0 +1,58 @@
+Dialog Markup Language (DML) Format Rules:
+### 1. Core Components
+
+The language consists of three primary types of components identified by tags:
+
+  * **User Turns:** Represented by the `</user>` tag.
+  * **Assistant Turns:** Represented by the `</assistant>` tag.
+  * **Tool Calls and Responses:** Represented by the `<tool>` and `<tool_response>` tags.
+
+### 2. Turn Structure
+
+  * **Turn Delimiters:** `</user>` and `</assistant>` act as markers for the beginning of a new natural language utterance in the conversation.
+  * **Sequential Turns:** The conversation follows a strict sequence of turns, alternating between the user and the assistant.
+
+### 3. User Turn (`</user>`)
+
+  * **Purpose:** To capture the exact text input provided by the human user.
+  * **Rule:** A user turn consists only of the `</user>` tag followed by the user's natural language text.
+
+    **Example:**
+    ```
+    </user> Lyon sounds perfect! Let's lock that in.
+    ```
+
+### 4. Assistant Turn (`</assistant>`)
+
+  * **Purpose:** To capture the assistant's response to the user and to log the tool calls it makes.
+  * **Rules:**
+    1.  An assistant's turn is marked by the `</assistant>` tag.
+    2.  This `</assistant>` tag can be followed by an optional natural language response (e.g., "I'm on it," "Let me check...").
+    3.  If the assistant needs to use tools, the turn will then include one or more `<tool>` blocks.
+    4.  Each `<tool>` block must be followed by a corresponding `<tool_response>` block.
+    5.  After tool calls and their responses, the assistant can provide another `</assistant>` tag with the final response.
+
+### 5. Tool Usage (`<tool>` and `<tool_response>`)
+
+  * **Purpose:** To log the assistant's internal actions, such as calling APIs or running functions.
+  * **`<tool>` Block:**
+      * Enclosed by `<tool>` and `</tool>` tags.
+      * Content **must** be a JSON object with `"name"` (string) and `"arguments"` (JSON object) keys.
+  * **`<tool_response>` Block:**
+      * Enclosed by `<tool_response>` and `</tool_response>` tags.
+      * Always follows a `<tool>` block.
+      * Content **must** be a JSON object representing the data returned by the tool.
+
+### Summary of a Complex Assistant Turn Flow (INTERLEAVED FORMAT - REQUIRED)
+
+**CRITICAL RULE:** Each `<tool>` must be immediately followed by its `<tool_response>` before any other tool call. This is the INTERLEAVED format.
+
+1.  **`</assistant>`**: Start of turn, often with an acknowledgment like "I'm on it."
+2.  **`<tool>`...`</tool>`**: The first tool call (e.g., get weather).
+3.  **`<tool_response>`...`</tool_response>`**: The response from the first tool call **IMMEDIATELY** after the first tool.
+4.  **`</assistant>`**: Optional message processing the first result before calling the next tool.
+5.  **`<tool>`...`</tool>`**: The second tool call (e.g., search for restaurants).
+6.  **`<tool_response>`...`</tool_response>`**: The response from the second tool call **IMMEDIATELY** after the second tool.
+7.  **`</assistant>`**: The final, user-facing summary that uses the data from both tool responses.
+
+IMPORTANT: Each <tool> must have an immediate <tool_response> for each tool call before any other tag!!!

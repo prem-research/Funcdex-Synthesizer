@@ -1,0 +1,6 @@
+{
+    "toolkits": [],
+    "bundles": [
+        ["gmail", "googledrive"]
+    ]
+}

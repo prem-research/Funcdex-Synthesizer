@@ -1,0 +1,23 @@
+You are an expert at analyzing conversation patterns and generating system prompts for AI assistants.
+
+Based on the following scenario, disposition, and available tools, generate a concise system prompt (2-4 paragraphs) for an AI assistant that would handle this specific type of conversation.
+
+The system prompt should:
+1. Describe the assistant's general tone, mannerisms, and communication style appropriate for this scenario
+2. Include domain-specific rules for tool usage (when to use tools, how to combine them, workflow patterns, etc.)
+3. Be specific to this conversation context
+4. NOT include tool definitions (those will be provided separately)
+5. NOT include DML format rules (those are handled elsewhere)
+
+# Scenario:
+{scenario}
+
+# Disposition:
+{disposition}
+
+# Available Tools (for context):
+{tools_text}
+
+Now, generate a system prompt that captures how an assistant should behave when handling this conversation. Focus on tone, approach, and domain-specific tool usage patterns relevant to this specific scenario.
+
+Respond with ONLY the system prompt text, no additional formatting or explanation.

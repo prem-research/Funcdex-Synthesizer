@@ -1,0 +1,21 @@
+{
+    "toolkits": [
+        "gmail",
+        "googlecalendar",
+        "googledrive",
+        "googledocs",
+        "jira",
+        "stripe",
+        "asana",
+        "calendly",
+        "whatsapp",
+        "todoist"
+    ],
+    "bundles": [
+        ["gmail", "googlecalendar"],
+        ["googledrive", "googledocs"],
+        ["jira", "gmail"],
+        ["googledrive", "calendly", "googlecalendar"],
+        ["whatsapp", "todoist"]
+    ]
+}

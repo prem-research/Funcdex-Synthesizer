@@ -1,0 +1,6 @@
+2. **Use the Dialog Markup Language (DML) as defined in the system prompt.**
+3. Make sure the tool calls are valid and match the available tools. Respect `tool_input_parameters` and `tool_response_parameters` of the tools.
+4. Generate a long (>10 turns) and natural conversation involving a complex user request and multiple toolkits.
+5. **IMPORTANT - User Query Clarity Level: {clarity_level}**
+   {clarity_description}
+   The user's messages should reflect this clarity level throughout the conversation.

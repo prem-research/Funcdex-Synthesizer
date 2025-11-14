@@ -1,0 +1,20 @@
+Based on the given scenario, user persona, disposition and tools, generate a list of tool names that were used in the conversation.
+
+# Scenario:
+{scenario}
+
+# User persona:
+{user_persona_desc}
+
+# Disposition:
+{disposition_desc}
+
+# All Tools:
+{all_formatted_tools_json}
+
+Now, respond with just the applicable list of tool names. Structure your response as a JSON with the following schema:
+{{
+    "reasoning": "reason about the user request, scenario and which tools were used",
+    "tool_ids": ["tool1", "tool2", "tool3"]
+}}
+
