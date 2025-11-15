@@ -48,7 +48,7 @@ Notes:
 - *Funcdex-0.6B is the average of performances of individual Funcdex-0.6B models.*
 - For cost, we track the number of prompt/completion tokens for evaluating 300 conversations.
 - e.g. If token cost is input=$1 and output=$10 per million tokens, and evaluation needed `0.5M` and `0.1M` input/output tokens, then cost is `1 * 0.5 + 0.1 * 10 = $1.5`.
-- *Qwen3-0.6B and Qwen3-1.7B evaluation costs are estimated extrapolated from Llama3.2-3B serverless costs. Other model's costs are sourced from Openrouter.*
+- *Qwen3-0.6B and Qwen3-1.7B evaluation costs are estimated by extrapolating from Llama3.2-3B serverless costs. Other model's costs are sourced from Openrouter.*
 
 For more details, refer to the blog post.
 
