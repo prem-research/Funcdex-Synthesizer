@@ -550,76 +550,6 @@ Next step...
     return False, None
 
 
-def has_problematic_evaluation_examples(messages):
-    problem_locations = []
-    
-    for i, msg in enumerate(messages):
-        if msg.get('role') == 'assistant' and 'tool_calls' in msg:
-            if i > 0 and messages[i-1].get('role') == 'tool':
-                prev_tool_name = messages[i-1].get('name', 'unknown')
-                curr_tool_names = [tc.get('function', {}).get('name', 'unknown') 
-                                  for tc in msg.get('tool_calls', [])]
-                problem_locations.append((i, prev_tool_name, curr_tool_names))
-    
-    if problem_locations:
-        error_msg = f"""ERROR: Problematic evaluation pattern - {len(problem_locations)} instance(s) found
-
-RULE: An assistant message with new tool calls should not immediately follow tool response messages.
-The assistant should first synthesize/process the tool results before making new tool calls.
-
-REASON FOR FAILURE: This pattern creates problematic training examples where tool responses are left unprocessed.
-The assistant should have a message that interprets/uses the tool results before calling more tools.
-
-PROBLEMATIC LOCATIONS:
-"""
-        for msg_idx, prev_tool, next_tools in problem_locations:
-            error_msg += f"  - Message {msg_idx}: After tool response from '{prev_tool}', immediately calls {next_tools}\n"
-        
-        error_msg += """
-CORRECT FORMAT EXAMPLE:
-<assistant_thought>
-I'll call the weather API.
-</assistant_thought>
-</assistant> Let me check the weather.
-<tool>
-{"name": "get_weather", "arguments": {"city": "London"}}
-</tool>
-<tool_response>
-{"temperature": 15, "condition": "cloudy"}
-</tool_response>
-<assistant_thought>
-Got the weather: 15°C and cloudy. Now I need to search for restaurants.
-</assistant_thought>
-</assistant> It's 15°C and cloudy. Let me find restaurants for you.
-<tool>
-{"name": "search_restaurants", "arguments": {"city": "London"}}
-</tool>
-
-INCORRECT FORMAT (what you have):
-<assistant_thought>
-I'll call the weather API.
-</assistant_thought>
-</assistant> Let me check the weather.
-<tool>
-{"name": "get_weather", "arguments": {"city": "London"}}
-</tool>
-<tool_response>
-{"temperature": 15, "condition": "cloudy"}
-</tool_response>
-# ERROR: Next line immediately calls another tool without processing the weather result!
-<assistant_thought>
-Now searching restaurants.
-</assistant_thought>
-</assistant>
-<tool>
-{"name": "search_restaurants", "arguments": {"city": "London"}}
-</tool>"""
-        
-        return True, error_msg
-    
-    return False, None
-
-
 def get_tools_from_toolkit(toolkit_name, tool_defs):
     tools = []
     for tool in tool_defs:
@@ -734,11 +664,7 @@ Please check your JSON syntax and tag structure."""
     has_missing, missing_error = has_missing_tool_responses(messages)
     if has_missing:
         all_errors.append(missing_error)
-    
-    has_problems, problem_error = has_problematic_evaluation_examples(messages)
-    if has_problems:
-        all_errors.append(problem_error)
-    
+        
     if all_errors:
         return False, None, all_errors
     else:
