@@ -280,7 +280,7 @@ python3 examples/utils/parse_openapi_spec.py \
 ## Known issues
 - If the tool expects file content, the pipeline will produce tool calls containing arguments like `"content": "<base64-encoded-content>"`.
 - Deduplication using Vector embeddings is not good enough. We've noticed that both: false positives and negatives, even with Qwen3-Reranker-8B.
-- Pipeline performance is poor. It takes about 2 days to generate 1500 conversations on 4 H200 GPUs.
+- Pipeline performance is poor. It takes about 15 hours to generate 1700 conversations on 4 H200 GPUs.
 - Conversation realism: Although the conversations are better than any public offering, the conversations still don't feel very natural. Idea: Use a better User simulator such as [UserLM-8b](https://huggingface.co/microsoft/UserLM-8b).
 - We didn't try optimizing the prompts at all. 
 - This codebase was refactored for release and has not been tested thoroughly in its current form. If you find a bug, please open an issue, we will attend to it at the earliest.
