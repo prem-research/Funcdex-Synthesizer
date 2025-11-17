@@ -95,19 +95,6 @@ def toolkit_to_openai_tools(toolkit_name) -> list[dict]:
     return openai_tools
 
 
-def has_problematic_evaluation_examples(messages):
-    problem_count = 0
-    total_examples = 0
-    
-    for i, msg in enumerate(messages):
-        if msg.get('role') == 'assistant' and 'tool_calls' in msg:
-            total_examples += 1
-            if i > 0 and messages[i-1].get('role') == 'tool':
-                problem_count += 1
-    
-    return problem_count > 0, problem_count, total_examples
-
-
 def has_missing_tool_responses(messages):
     num_missing = 0
     
@@ -167,12 +154,6 @@ with open(jsonl_path, 'r') as f:
             filtered_by_toolkit[toolkit] += 1
             continue
         
-        has_problems, problem_count, example_count = has_problematic_evaluation_examples(messages)
-        total_examples += example_count
-        if has_problems:
-            total_problematic_conversations += 1
-            total_problematic_examples += problem_count
-        
         used_tool_names_original = extract_used_tool_names(messages)
         
         tools = toolkit_to_openai_tools(toolkit)
@@ -218,20 +199,6 @@ if filtered_conversations > 0:
     print(f"        tool message responses, which violates OpenAI API requirements.")
 else:
     print(f"No conversations filtered - all conversations are valid!")
-print(f"{'='*70}\n")
-
-print(f"\n{'='*70}")
-print("OPENAI API COMPATIBILITY CHECK")
-print(f"{'='*70}")
-print(f"Total conversations: {len([conv for convs in conversations.values() for conv in convs])}")
-print(f"Total evaluation examples: {total_examples}")
-print(f"\nProblematic evaluation examples: {total_problematic_examples} ({100*total_problematic_examples/total_examples if total_examples > 0 else 0:.1f}%)")
-print(f"  (These end with tool messages and will be skipped during evaluation)")
-print(f"\nClean evaluation examples: {total_examples - total_problematic_examples} ({100*(total_examples - total_problematic_examples)/total_examples if total_examples > 0 else 0:.1f}%)")
-print(f"  (These are API-compliant and will be evaluated)")
-print(f"\nNote: Problematic examples occur when assistant makes tool_calls immediately")
-print(f"      after tool responses, creating contexts ending with unprocessed tools.")
-print(f"      evaluate_test_set.py will automatically skip these during evaluation.")
 print(f"{'='*70}\n")
 
 max_tools = config.processing.max_tools_per_conversation
